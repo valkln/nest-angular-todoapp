@@ -39,7 +39,9 @@ export class AppService {
   }
   update(todo: Todo) {
     this.http
-      .put<Todo>(`http://localhost:3000/api/todo/${todo.id}`, todo)
+      .put<Todo>(`http://localhost:3000/api/todo/${todo.id}`, {
+        isCompleted: !todo.isCompleted,
+      })
       .subscribe((updatedTodo) => {
         this.todoList = this.todoList.map((todo) =>
           todo.id !== updatedTodo.id ? todo : updatedTodo,
