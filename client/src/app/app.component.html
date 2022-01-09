@@ -1,10 +1,10 @@
-<form (ngSubmit)="submit()">
+<form (ngSubmit)="create()">
   <input type="text" name="title" [(ngModel)]="title" />
   <button [disabled]="!title" type="submit">Add new todo</button>
 </form>
 
 <ul>
-  <li *ngFor="let todo of todoList">
+  <li *ngFor="let todo of todoList$ | async">
     <input
       type="checkbox"
       name="isCompleted"

@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from './app.service';
 import { Todo } from './models/todo';
@@ -8,33 +9,25 @@ import { Todo } from './models/todo';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  public todoList: Todo[] = [];
+  public todoList$: Observable<Todo[]>;
   public title = '';
-  constructor(private service: AppService) {}
-  ngOnInit() {
-    this.service.getAll().subscribe((todoList) => {
-      this.todoList = todoList;
-    });
+  constructor(private service: AppService) {
+    this.todoList$ = new Observable<Todo[]>();
   }
-  submit() {
+  ngOnInit() {
+    this.todoList$ = this.service.entities$;
+    this.service.getAll();
+  }
+  create() {
     if (this.title) {
-      this.service.create(this.title).subscribe((todo) => {
-        this.todoList.push(todo);
-        this.title = '';
-      });
+      this.service.create(this.title);
+      this.title = '';
     }
   }
   delete(id: number) {
-    this.service.delete(id).subscribe(() => {
-      this.todoList = this.todoList.filter((todo) => todo.id !== id);
-    });
+    this.service.delete(id);
   }
   toggleCompleted(todo: Todo) {
-    todo.isCompleted = !todo.isCompleted;
-    this.service.update(todo).subscribe((updatedTodo) => {
-      this.todoList = this.todoList.map((todo) =>
-        todo.id !== updatedTodo.id ? todo : updatedTodo,
-      );
-    });
+    this.service.update(todo);
   }
 }
