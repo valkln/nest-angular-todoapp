@@ -1,20 +1,29 @@
-<form (ngSubmit)="create()">
-  <input type="text" name="title" [(ngModel)]="title" />
-  <button [disabled]="!title" type="submit">Add new todo</button>
-</form>
-
-<ul>
-  <li *ngFor="let todo of todoList$ | async">
+<div class="container">
+  <form (ngSubmit)="create()">
+    <p>Create a todo</p>
     <input
-      type="checkbox"
-      name="isCompleted"
-      [checked]="todo.isCompleted"
-      (change)="toggleCompleted(todo)"
+      type="text"
+      name="title"
+      [(ngModel)]="title"
+      placeholder="New todo text"
     />
-    <span *ngIf="!todo.isCompleted">{{ todo.title }}</span>
-    <span *ngIf="todo.isCompleted"
-      ><del>{{ todo.title }}</del></span
-    >
-    <button (click)="delete(todo.id)">delete</button>
-  </li>
-</ul>
+    <button [disabled]="!title" type="submit">Add new todo</button>
+  </form>
+
+  <ul>
+    <li *ngFor="let todo of todoList$ | async">
+      <input
+        type="checkbox"
+        name="isCompleted"
+        [checked]="todo.isCompleted"
+        (change)="toggleCompleted(todo)"
+      />
+      <span *ngIf="!todo.isCompleted">{{ todo.title }}</span>
+      <span *ngIf="todo.isCompleted"
+        ><del>{{ todo.title }}</del></span
+      >
+      <span class="filler"></span>
+      <button (click)="delete(todo.id)">delete</button>
+    </li>
+  </ul>
+</div>
